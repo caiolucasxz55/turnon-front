@@ -1,0 +1,145 @@
+<div class="page-enter">
+
+  <!-- Header -->
+  <div class="mb-6">
+    <h2 class="font-display font-bold text-2xl">Músicas</h2>
+    <p class="text-white/40 text-sm mt-1">Explore o catálogo ou busque no iTunes</p>
+  </div>
+
+  <!-- ── Busca externa (iTunes via Http Exchange) ───────── -->
+  <div class="search-box mb-8">
+    <div class="relative">
+      <span class="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 text-sm">🔍</span>
+      <input
+        type="text"
+        [value]="searchTerm()"
+        (input)="onSearchInput($event)"
+        placeholder="Buscar músicas no iTunes..."
+        class="input pl-10 pr-10"
+      />
+      @if (searchTerm()) {
+        <button (click)="clearSearch()"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-white/30
+                       hover:text-white transition-colors text-lg leading-none">
+          ✕
+        </button>
+      }
+    </div>
+
+    <!-- Resultados externos -->
+    @if (showExternal()) {
+      <div class="external-results">
+        <div class="flex items-center gap-2 px-4 pt-3 pb-1">
+          <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">iTunes</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-brand-purple/10 border border-brand-purple/20
+                       text-brand-purple-light">Http Exchange</span>
+        </div>
+
+        @if (searching()) {
+          <div class="flex flex-col gap-1 p-2">
+            @for (n of [1,2,3]; track n) {
+              <div class="skeleton-row"></div>
+            }
+          </div>
+        } @else if (externalSongs().length === 0) {
+          <p class="text-sm text-white/30 px-4 py-4">Nenhum resultado encontrado.</p>
+        } @else {
+          <div class="flex flex-col gap-0.5 p-2">
+            @for (song of externalSongs(); track song.trackName) {
+              <div class="ext-song-row">
+                @if (song.artworkUrl100) {
+                  <img [src]="song.artworkUrl100" [alt]="song.trackName"
+                       class="w-9 h-9 rounded-lg object-cover shrink-0" />
+                } @else {
+                  <div class="w-9 h-9 rounded-lg bg-brand-surface-2 shrink-0"></div>
+                }
+                <div class="flex-1 min-w-0">
+                  <p class="truncate text-sm font-medium">{{ song.trackName }}</p>
+                  <p class="truncate text-xs text-white/40">{{ song.artistName }} · {{ song.collectionName }}</p>
+                </div>
+                <span class="text-xs text-white/30 shrink-0">{{ formatMs(song.trackTimeMillis) }}</span>
+                @if (song.previewUrl) {
+                  <a [href]="song.previewUrl" target="_blank"
+                     class="preview-btn" title="Ouvir prévia">▶</a>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- ── Catálogo local ─────────────────────────────────── -->
+  <div class="flex items-center justify-between mb-3">
+    <h3 class="label">Catálogo local</h3>
+  </div>
+
+  <!-- Filtro por gênero -->
+  <div class="flex flex-wrap gap-2 mb-5">
+    <button (click)="filterByGenre('')"
+            [class.active]="selectedGenre() === ''"
+            class="genre-chip">
+      Todos
+    </button>
+    @for (genre of genres(); track genre.id) {
+      <button (click)="filterByGenre(genre.slug)"
+              [class.active]="selectedGenre() === genre.slug"
+              class="genre-chip">
+        {{ genre.name }}
+      </button>
+    }
+  </div>
+
+  <!-- Lista local -->
+  @if (loading()) {
+    <div class="flex flex-col gap-1">
+      @for (n of [1,2,3,4,5]; track n) {
+        <div class="skeleton-row"></div>
+      }
+    </div>
+  } @else if (songs().length === 0) {
+    <div class="empty-state">
+      <span class="text-4xl">🎵</span>
+      <p>Nenhuma música encontrada</p>
+    </div>
+  } @else {
+    <div class="flex flex-col gap-1">
+      @for (song of songs(); track song.id; let i = $index) {
+        <div class="song-row">
+          <span class="text-white/20 text-sm w-5 text-right shrink-0">{{ i + 1 }}</span>
+
+          <div class="flex-1 min-w-0">
+            <p class="truncate font-medium text-sm">{{ song.title }}</p>
+            <p class="truncate text-xs text-white/40">{{ song.artist }}
+              @if (song.album) { · {{ song.album }} }
+            </p>
+          </div>
+
+          <span class="genre-badge hidden sm:inline-flex">{{ song.genre.name }}</span>
+          <span class="text-xs text-white/30 shrink-0">{{ song.duration | duration }}</span>
+
+          <!-- Menu adicionar à playlist -->
+          <div class="relative shrink-0">
+            <button (click)="toggleMenu(song)" class="add-btn" title="Adicionar à playlist">+</button>
+            @if (activeSong()?.id === song.id) {
+              <div class="dropdown">
+                @if (playlists().length === 0) {
+                  <p class="text-xs text-white/30 px-3 py-2">Nenhuma playlist criada</p>
+                } @else {
+                  @for (pl of playlists(); track pl.id) {
+                    <button (click)="addToPlaylist(pl.id, song.id)" class="dropdown-item">
+                      {{ pl.name }}
+                    </button>
+                  }
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+</div>
+

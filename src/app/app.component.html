@@ -1,0 +1,8 @@
+@if (auth.isAuthenticated()) {
+  <app-navbar />
+  <main class="max-w-5xl mx-auto px-5 py-8">
+    <router-outlet />
+  </main>
+} @else {
+  <router-outlet />
+}

@@ -1,0 +1,86 @@
+<div class="page-enter">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h2 class="font-display font-bold text-2xl">Playlists</h2>
+      <p class="text-white/40 text-sm mt-1">Organize suas músicas favoritas</p>
+    </div>
+    <button (click)="openModal()" class="btn-primary">
+      + Nova playlist
+    </button>
+  </div>
+
+  <!-- Grid -->
+  @if (loading()) {
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (n of [1,2,3]; track n) {
+        <div class="skeleton-card"></div>
+      }
+    </div>
+  } @else if (playlists().length === 0) {
+    <div class="empty-state">
+      <span class="text-4xl">🎶</span>
+      <p>Nenhuma playlist ainda. Crie a primeira!</p>
+    </div>
+  } @else {
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (pl of playlists(); track pl.id) {
+        <a [routerLink]="['/playlists', pl.id]" class="playlist-card group">
+          <!-- Icon -->
+          <div class="card-icon">🎵</div>
+          <!-- Info -->
+          <div class="flex-1 min-w-0">
+            <p class="font-display font-bold truncate">{{ pl.name }}</p>
+            @if (pl.description) {
+              <p class="text-xs text-white/40 truncate mt-0.5">{{ pl.description }}</p>
+            }
+            <p class="text-xs text-white/30 mt-1">{{ pl.songs.length }} música{{ pl.songs.length !== 1 ? 's' : '' }}</p>
+          </div>
+          <!-- Delete -->
+          <button (click)="delete(pl.id, $event)"
+                  class="delete-btn opacity-0 group-hover:opacity-100">
+            ✕
+          </button>
+        </a>
+      }
+    </div>
+  }
+
+</div>
+
+<!-- Modal de criação -->
+@if (showModal()) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div class="modal-box page-enter" (click)="$event.stopPropagation()">
+
+      <div class="flex items-center justify-between mb-5">
+        <h3 class="font-display font-bold text-lg">Nova playlist</h3>
+        <button (click)="closeModal()" class="text-white/30 hover:text-white transition-colors text-xl">✕</button>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="create()" class="flex flex-col gap-4" novalidate>
+        <div class="flex flex-col gap-1.5">
+          <label class="label">Nome</label>
+          <input formControlName="name" class="input" placeholder="Minha playlist" />
+          @if (form.get('name')?.invalid && form.get('name')?.touched) {
+            <span class="text-xs text-red-400">Nome obrigatório.</span>
+          }
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="label">Descrição <span class="normal-case text-white/20">(opcional)</span></label>
+          <input formControlName="description" class="input" placeholder="Uma descrição..." />
+        </div>
+
+        <div class="flex gap-3 mt-2">
+          <button type="button" (click)="closeModal()" class="btn-ghost flex-1 justify-center">Cancelar</button>
+          <button type="submit" [disabled]="submitting()" class="btn-primary flex-1 justify-center">
+            {{ submitting() ? 'Criando...' : 'Criar' }}
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+}

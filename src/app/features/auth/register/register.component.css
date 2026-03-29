@@ -1,0 +1,8 @@
+.auth-bg {
+  @apply min-h-screen flex items-center justify-center px-4 bg-brand-black;
+  background-image: radial-gradient(ellipse 60% 50% at 50% 0%, #FF6B0015, transparent);
+}
+
+.auth-card {
+  @apply w-full max-w-sm bg-brand-surface border border-brand-border rounded-3xl p-8;
+}

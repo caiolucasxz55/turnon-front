@@ -1,0 +1,60 @@
+<div class="page-enter">
+
+  <!-- Header -->
+  <div class="mb-8">
+    <h2 class="font-display font-bold text-2xl">
+      Olá, <span class="text-brand-orange">{{ auth.currentUser()?.name }}</span> 👋
+    </h2>
+    <p class="text-white/40 text-sm mt-1">Escolha seus gêneros favoritos e descubra músicas</p>
+  </div>
+
+  <!-- Gêneros favoritos -->
+  <section class="mb-8">
+    <h3 class="label mb-3">Seus gêneros</h3>
+    <div class="flex flex-wrap gap-2">
+      @for (genre of allGenres(); track genre.id) {
+        <button (click)="toggleGenre(genre.id)"
+                [class.active]="isSelected(genre.id)"
+                class="genre-chip">
+          {{ genre.name }}
+        </button>
+      }
+    </div>
+  </section>
+
+  <!-- Recomendadas -->
+  <section>
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-display font-bold text-lg">Recomendadas para você</h3>
+      <a routerLink="/songs" class="text-sm text-brand-orange hover:underline">Ver todas</a>
+    </div>
+
+    @if (loading()) {
+      <div class="grid gap-2">
+        @for (n of [1,2,3,4]; track n) {
+          <div class="skeleton-row"></div>
+        }
+      </div>
+    } @else if (recommended().length === 0) {
+      <div class="empty-state">
+        <span class="text-4xl">🎵</span>
+        <p>Selecione alguns gêneros acima para ver recomendações</p>
+      </div>
+    } @else {
+      <div class="flex flex-col gap-1">
+        @for (song of recommended(); track song.id; let i = $index) {
+          <div class="song-row">
+            <span class="text-white/20 text-sm w-5 text-right shrink-0">{{ i + 1 }}</span>
+            <div class="flex-1 min-w-0">
+              <p class="truncate font-medium text-sm">{{ song.title }}</p>
+              <p class="truncate text-xs text-white/40">{{ song.artist }}</p>
+            </div>
+            <span class="text-xs text-white/30 shrink-0 hidden sm:block">{{ song.genre.name }}</span>
+            <span class="text-xs text-white/30 shrink-0">{{ song.duration | duration }}</span>
+          </div>
+        }
+      </div>
+    }
+  </section>
+
+</div>

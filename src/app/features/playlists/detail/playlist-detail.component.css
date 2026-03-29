@@ -1,0 +1,38 @@
+.pl-icon {
+  @apply w-16 h-16 rounded-2xl bg-brand-purple/10 border border-brand-purple/20
+         flex items-center justify-center text-2xl shrink-0;
+}
+
+.song-row {
+  @apply flex items-center gap-4 px-4 py-3 rounded-xl
+         hover:bg-brand-surface-2 transition-colors duration-150 cursor-default;
+}
+
+.genre-badge {
+  @apply text-xs px-2.5 py-0.5 rounded-full bg-brand-purple/10
+         border border-brand-purple/20 text-brand-purple-light shrink-0;
+}
+
+.remove-btn {
+  @apply w-7 h-7 rounded-full flex items-center justify-center text-xs
+         text-white/30 hover:text-red-400 hover:bg-red-400/10
+         transition-all duration-150 shrink-0;
+}
+
+.skeleton-header {
+  @apply h-20 rounded-2xl;
+  background: linear-gradient(90deg, #1C1C21 25%, #252528 50%, #1C1C21 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.skeleton-row {
+  @apply h-14 rounded-xl;
+  background: linear-gradient(90deg, #1C1C21 25%, #252528 50%, #1C1C21 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.empty-state {
+  @apply flex flex-col items-center gap-3 py-16 text-white/30 text-sm text-center;
+}

@@ -1,0 +1,59 @@
+<div class="auth-bg">
+  <div class="auth-card page-enter">
+
+    <div class="text-center mb-8">
+      <h1 class="font-display font-extrabold text-4xl tracking-tight">
+        Turn<span class="text-brand-purple">ON</span>
+      </h1>
+      <p class="text-white/40 text-sm mt-2">Crie sua conta</p>
+    </div>
+
+    @if (error()) {
+      <div class="mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/30
+                  text-red-400 text-sm text-center">
+        {{ error() }}
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4" novalidate>
+
+      <div class="flex flex-col gap-1.5">
+        <label class="label">Nome</label>
+        <input formControlName="name" type="text" placeholder="Seu nome"
+               [class.error]="isInvalid('name')" class="input" />
+        @if (isInvalid('name')) {
+          <span class="text-xs text-red-400">Nome obrigatório.</span>
+        }
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label class="label">E-mail</label>
+        <input formControlName="email" type="email" placeholder="voce@email.com"
+               [class.error]="isInvalid('email')" class="input" />
+        @if (isInvalid('email')) {
+          <span class="text-xs text-red-400">E-mail inválido.</span>
+        }
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label class="label">Senha</label>
+        <input formControlName="password" type="password" placeholder="••••••"
+               [class.error]="isInvalid('password')" class="input" />
+        @if (isInvalid('password')) {
+          <span class="text-xs text-red-400">Mínimo 6 caracteres.</span>
+        }
+      </div>
+
+      <button type="submit" [disabled]="loading()" class="btn-primary w-full justify-center mt-2">
+        @if (loading()) { <span>Cadastrando...</span> } @else { <span>Criar conta</span> }
+      </button>
+
+    </form>
+
+    <p class="text-center text-sm text-white/40 mt-6">
+      Já tem conta?
+      <a routerLink="/login" class="text-brand-orange hover:underline font-medium">Entrar</a>
+    </p>
+
+  </div>
+</div>

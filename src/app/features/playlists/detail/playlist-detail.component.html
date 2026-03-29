@@ -1,0 +1,71 @@
+<div class="page-enter">
+
+  <!-- Voltar -->
+  <a routerLink="/playlists"
+     class="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white
+            transition-colors duration-150 mb-6">
+    ← Voltar
+  </a>
+
+  @if (loading()) {
+    <div class="skeleton-header mb-6"></div>
+    <div class="flex flex-col gap-1">
+      @for (n of [1,2,3,4]; track n) {
+        <div class="skeleton-row"></div>
+      }
+    </div>
+
+  } @else {
+    @if (playlist(); as pl) {
+
+      <!-- Info da playlist -->
+      <div class="flex items-start gap-5 mb-8">
+        <div class="pl-icon">🎵</div>
+        <div>
+          <h2 class="font-display font-bold text-2xl">{{ pl.name }}</h2>
+          @if (pl.description) {
+            <p class="text-white/40 text-sm mt-1">{{ pl.description }}</p>
+          }
+          <div class="flex items-center gap-3 mt-2 text-xs text-white/30">
+            <span>{{ pl.songs.length }} música{{ pl.songs.length !== 1 ? 's' : '' }}</span>
+            <span>·</span>
+            <span>{{ totalDuration() | duration }} total</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Músicas -->
+      @if (pl.songs.length === 0) {
+        <div class="empty-state">
+          <span class="text-4xl">🎶</span>
+          <p>Playlist vazia. Adicione músicas na tela de <a routerLink="/songs" class="text-brand-orange hover:underline">Músicas</a>.</p>
+        </div>
+      } @else {
+        <div class="flex flex-col gap-1">
+          @for (song of pl.songs; track song.id; let i = $index) {
+            <div class="song-row group">
+              <span class="text-white/20 text-sm w-5 text-right shrink-0">{{ i + 1 }}</span>
+
+              <div class="flex-1 min-w-0">
+                <p class="truncate font-medium text-sm">{{ song.title }}</p>
+                <p class="truncate text-xs text-white/40">{{ song.artist }}
+                  @if (song.album) { · {{ song.album }} }
+                </p>
+              </div>
+
+              <span class="genre-badge hidden sm:inline-flex">{{ song.genre.name }}</span>
+              <span class="text-xs text-white/30 shrink-0">{{ song.duration | duration }}</span>
+
+              <button (click)="removeSong(song.id)"
+                      class="remove-btn opacity-0 group-hover:opacity-100"
+                      title="Remover da playlist">
+                ✕
+              </button>
+            </div>
+          }
+        </div>
+      }
+    }
+
+  }
+</div>

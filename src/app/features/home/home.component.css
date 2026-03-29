@@ -1,0 +1,25 @@
+.genre-chip {
+  @apply px-4 py-1.5 rounded-full text-sm font-medium border border-brand-border
+         text-white/50 bg-brand-surface-2 transition-all duration-200
+         hover:border-brand-orange hover:text-brand-orange;
+}
+
+.genre-chip.active {
+  @apply bg-brand-orange/10 border-brand-orange text-brand-orange;
+}
+
+.song-row {
+  @apply flex items-center gap-4 px-4 py-3 rounded-xl
+         hover:bg-brand-surface-2 transition-colors duration-150 cursor-default;
+}
+
+.skeleton-row {
+  @apply h-14 rounded-xl;
+  background: linear-gradient(90deg, #1C1C21 25%, #252528 50%, #1C1C21 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.empty-state {
+  @apply flex flex-col items-center gap-3 py-16 text-white/30 text-sm;
+}
