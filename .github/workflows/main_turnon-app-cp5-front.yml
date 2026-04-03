@@ -14,18 +14,18 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Set up Node.js version
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
         node-version: '20.x'
+        cache: 'npm'
     
-    - name: npm install, build, and test
+    - name: Install dependencies and build
       run: |
-        npm install
-        npm run build --if-present
-        npm run test --if-present
+        npm ci
+        npm run build
 
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
@@ -33,4 +33,4 @@ jobs:
         app-name: 'turnon-app-cp5-front'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_8f90d948a69247509a0409aad875dcd4 }}
-        package: .
+        package: ./dist/turnon/browser
