@@ -34,4 +34,3 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_8f90d948a69247509a0409aad875dcd4 }}
         package: .
-        startup-command: 'pm2 serve /home/site/wwwroot/dist/turnon/browser --no-daemon --spa'
