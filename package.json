@@ -2,9 +2,8 @@
   "name": "turnon",
   "version": "0.0.0",
   "scripts": {
-    "ng": "npx ng",
-    "start": "npx ng serve",
-    "build": "npx ng build --configuration production"
+    "start": "ng serve",
+    "build": "ng build --configuration production"
   },
   "private": true,
   "dependencies": {
