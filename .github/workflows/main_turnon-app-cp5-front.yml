@@ -27,26 +27,6 @@ jobs:
         npm ci
         npm run build
 
-    - name: Disable remote build on App Service
-      uses: azure/appservice-settings@v1
-      with:
-        app-name: 'turnon-app-cp5-front'
-        slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_8f90d948a69247509a0409aad875dcd4 }}
-        app-settings-json: |
-          [
-            {
-              "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
-              "value": "false",
-              "slotSetting": false
-            },
-            {
-              "name": "WEBSITE_RUN_FROM_PACKAGE",
-              "value": "1",
-              "slotSetting": false
-            }
-          ]
-
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
       with: 
