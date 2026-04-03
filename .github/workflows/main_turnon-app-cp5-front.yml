@@ -27,6 +27,11 @@ jobs:
         npm ci
         npm run build
 
+    - name: Verify build output
+      run: |
+        test -d dist/turnon
+        ls -la dist/turnon
+
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
       with: 
@@ -34,3 +39,5 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_8f90d948a69247509a0409aad875dcd4 }}
         package: dist/turnon
+      env:
+        WEBSITE_RUN_FROM_PACKAGE: "1"
