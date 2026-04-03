@@ -4,7 +4,7 @@ import { Song } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class SongService {
-  private readonly API = 'http://localhost:8080/songs';
+  private readonly API = 'https://turnon-app-cp5.azurewebsites.net/songs';
 
   constructor(private http: HttpClient) {}
 

@@ -6,7 +6,7 @@ import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private readonly API = 'http://localhost:8080/users';
+  private readonly API = 'https://turnon-app-cp5.azurewebsites.net/users';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 

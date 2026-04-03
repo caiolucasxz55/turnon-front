@@ -6,7 +6,7 @@ import { AuthResponse, User } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly API = 'http://localhost:8080/auth';
+  private readonly API = 'https://turnon-app-cp5.azurewebsites.net/auth';
 
   currentUser = signal<User | null>(this.loadUser());
   isAuthenticated = computed(() => !!this.currentUser());

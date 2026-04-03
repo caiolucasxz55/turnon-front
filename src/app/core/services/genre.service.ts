@@ -7,6 +7,6 @@ export class GenreService {
   constructor(private http: HttpClient) {}
 
   getAll() {
-    return this.http.get<Genre[]>('http://localhost:8080/genres');
+    return this.http.get<Genre[]>('https://turnon-app-cp5.azurewebsites.net/genres');
   }
 }

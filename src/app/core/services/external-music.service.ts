@@ -17,7 +17,7 @@ export interface ExternalSearchResponse {
 
 @Injectable({ providedIn: 'root' })
 export class ExternalMusicService {
-  private readonly API = 'http://localhost:8080/external/songs';
+  private readonly API = 'https://turnon-app-cp5.azurewebsites.net/external/songs';
 
   constructor(private http: HttpClient) {}
 

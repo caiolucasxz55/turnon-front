@@ -4,7 +4,7 @@ import { Playlist } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class PlaylistService {
-  private readonly API = 'http://localhost:8080/playlists';
+  private readonly API = 'https://turnon-app-cp5.azurewebsites.net/playlists';
 
   constructor(private http: HttpClient) {}
 
